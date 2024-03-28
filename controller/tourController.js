@@ -16,7 +16,7 @@ exports.getAllTours =catchAsync(async(req,res)=>{
 
 exports.getTour =catchAsync(async(req, res)=>{
 
-    const tour = await Tour.findById(req.params.id);
+    const tour = await Tour.findById(req.params.id).populate('guides');
 
         res.status(200).json({
             status:'success',
@@ -27,24 +27,18 @@ exports.getTour =catchAsync(async(req, res)=>{
 
 })
 
-exports.createTour=(req,res)=>{
-    try{
-       const newTour =  Tour.create(req.body)
+exports.createTour=catchAsync(async(req,res, next)=>{
 
+       const newTour =await  Tour.create(req.body)
+         console.log(newTour)
        res.status(200).json({
         status:'success',
         data:{
             tour:newTour
         }
        })
-    }catch(err){
-        console.log(err)
-        res.status(500).json({
-            status:'error',
-            message:"internal server error"
-        })
-    }
-}
+
+})
 
 exports.deleteTour=catchAsync(async(req,res)=>{
 
