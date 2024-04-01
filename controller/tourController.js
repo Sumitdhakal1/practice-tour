@@ -1,59 +1,73 @@
 const Tour = require('../models/tourModels')
-const catchAsync = require('../utils/catchAsync')
+const factory = require('./handlerFactory')
+// const catchAsync = require('../utils/catchAsync')
 
-exports.getAllTours =catchAsync(async(req,res)=>{
+exports.getAllTours = factory.getAll(Tour)
 
-    const tours =await Tour.find(req.params)
+exports.getTour = factory.getOne(Tour, {path:'review',select:''})
 
-    res.status(200).json({
-        status:'success',
-        data:{
-            tours,
-        }
-    })
+exports.createTour = factory.createOne(Tour)
 
-});
+exports.deleteTour = factory.deleteOne(Tour)
 
-exports.getTour =catchAsync(async(req, res)=>{
+exports.updateOne = factory.updateOne(Tour)
 
-    const tour = await Tour.findById(req.params.id).populate('guides');
 
-        res.status(200).json({
-            status:'success',
-            data:{
-                tour
-            }
-        })
+// exports.getAllTours =catchAsync(async(req,res)=>{
 
-})
+//     const tours =await Tour.find(req.params)
 
-exports.createTour=catchAsync(async(req,res, next)=>{
+//     res.status(200).json({
+//         status:'success',
+//         data:{
+//             tours,
+//         }
+//     })
 
-       const newTour =await  Tour.create(req.body)
-         console.log(newTour)
-       res.status(200).json({
-        status:'success',
-        data:{
-            tour:newTour
-        }
-       })
+// });
+// exports.getTour =catchAsync(async(req, res)=>{
 
-})
+//     // const tour = await Tour.findById(req.params.id).populate({
+//     //     path:'guides',
+//     //      select: '-__v'
+//     //     });
+//     const tour = await Tour.findById(req.params.id).populate({path:'review'})
 
-exports.deleteTour=catchAsync(async(req,res)=>{
+//         res.status(200).json({
+//             status:'success',
+//             data:{
+//                 tour
+//             }
+//         })
 
-       await Tour.findByIdAndDelete(req.params.id)
+// })
 
-        res.status(200).json({
-            status:'success',
-            data:null
+// exports.createTour=catchAsync(async(req,res, next)=>{
+
+//        const newTour =await  Tour.create(req.body)
+//        res.status(200).json({
+//         status:'success',
+//         data:{
+//             tour:newTour
+//         }
+//        })
+
+// })
+
+// exports.deleteTour=catchAsync(async(req,res)=>{
+
+//        await Tour.findByIdAndDelete(req.params.id)
+
+//         res.status(200).json({
+//             status:'success',
+//             data:null
             
-        })
+//         })
 
-        console.log(err)
-        res.status(500).json({
-            status:'error',
-            message:'internal server error'
-        })
+//         console.log(err)
+//         res.status(500).json({
+//             status:'error',
+//             message:'internal server error'
+//         })
     
-})
+// })
